@@ -23,7 +23,7 @@ wget --no-check-certificate --quiet \
 
 ###### Endpoint
 
-http://your-install/scrappy
+http://your-install/scrape
 
 ###### Post or Get
 
