@@ -2,6 +2,8 @@
 
 A php based web scrapper exposing a rest api. [scrappy](http://tyganeutronics.com/scrappy)
 
+![Postman Screenshot](.github/screenshots/screenshot-1.png)
+
 ---
 Ever wanted to just get just three letters from a website, maybe just for watching a websites' content count and implementing a full web scraper would be over kill? Well that's what scrappy is for. Just provide a url, css/xpath selector and get the content of first matched element.
 
