@@ -29,8 +29,8 @@ http://your-install/scrappy
     - Page to scrape
 2. selector: 
   - Selectors to filter out unwanted content, with either of the below listed options
-        - css: `#rates > div > div > div.pricing-tables-wrap > div:nth-child(5) > div > div > div:nth-child(2) > div`
-        - xpath: `.//*[@id="rates"]/div/div/div[contains(concat(" ",normalize-space(@class)," ")," pricing-tables-wrap ")]/div[(count(preceding-sibling::*)+1) = 5]/div/div/div[(count(preceding-sibling::*)+1) = 2]/div/span[contains(concat(" ",normalize-space(@class)," ")," pricing-table-price-amount ")][contains(concat(" ",normalize-space(@class)," ")," h1 ")]`
+    - css: `#rates > div > div > div.pricing-tables-wrap > div:nth-child(5) > div > div > div:nth-child(2) > div`
+    - xpath: `.//*[@id="rates"]/div/div/div[contains(concat(" ",normalize-space(@class)," ")," pricing-tables-wrap ")]/div[(count(preceding-sibling::*)+1) = 5]/div/div/div[(count(preceding-sibling::*)+1) = 2]/div/span[contains(concat(" ",normalize-space(@class)," ")," pricing-table-price-amount ")][contains(concat(" ",normalize-space(@class)," ")," h1 ")]`
 3. format:
   - The format to return the data in
     - html: Will just return the html of first matching element.
