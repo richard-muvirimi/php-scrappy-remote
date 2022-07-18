@@ -1,0 +1,62 @@
+name: Update Dependencies
+
+on:
+  # On push or after every 7 days
+  push:
+    branches: [ development ]
+  schedule:
+  - cron: "0 0 1/7 * *"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: intl zip
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      
+      - name: Composer Setup
+        run: composer update
+        
+      - name: Commit
+        run: |
+            git config --local user.email "rich4rdmuvirimi@gmail.com"
+            git config --local user.name "Richard Muvirimi"
+            git add -A
+            git status | grep "nothing to commit" || git commit -m "Update dependencies" -a
+                
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: development
+        
+      - name: Deploy 
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -rvzt --include 'vendor' --exclude-from=.gitignore --exclude '.git' --exclude '.github' --delete
+          path: ./
+          remote_path: ${{ secrets.DEPLOY_PATH }}
+          remote_host: ${{ secrets.DEPLOY_HOST }}
+          remote_port: ${{ secrets.DEPLOY_PORT }}
+          remote_user: ${{ secrets.DEPLOY_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
