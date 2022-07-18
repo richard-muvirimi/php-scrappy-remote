@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="IDBZ Standard" namespace="IBDZ\Portal">
-    <description>Coding Standards for the IDBZ Portal and Php 7.4</description>
+<ruleset name="Scrappy Standard" namespace="richard-muvirimi/scrappy">
+    <description>Coding Standards for the Scrappy and Php 7.4</description>
 
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/system/*</exclude-pattern>

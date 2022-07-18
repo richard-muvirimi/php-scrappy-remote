@@ -13,3 +13,6 @@
  *
  * @see: https://codeigniter4.github.io/CodeIgniter4/
  */
+
+define('DEFAULT_ID', 0);
+define('DEFAULT_PARENT_ID', -1);
