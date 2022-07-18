@@ -1,63 +1,73 @@
-# CodeIgniter 4 Application Starter
+# Scrappy
 
-## What is CodeIgniter?
+A php based web scrapper exposing a rest api. [scrappy](http://tyganeutronics.com/scrappy)
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
+---
+Ever wanted to just get just three letters from a website, maybe just for watching a websites' content count and implementing a full web scraper would be over kill? Well that's what scrappy is for. Just provide a url, css/xpath selector and get the content of first matched element.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+### Usage
 
-More information about the plans for version 4 can be found in [the announcement](http://forum.codeigniter.com/thread-62615.html) on the forums.
+For example getting specific rate from http://zimrate.tyganeutronics.com using wget
 
-The user guide corresponding to this version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+```shell
+wget --no-check-certificate --quiet \
+  --method POST \
+  --timeout=0 \
+  --header 'Authorization: Bearer 9xGzsuSKkRyyoVKM3SaIYgnrdubnCAzFjCc0iQ+g6BgoUZ2dAM1Ij9aIzk7S7Jy9K3Mp7KP+f2vgQzF4/vj3v/BYQZZ4I0nyrfZC4duB+2fc/KKhoDMeEiKtd5J/jRg2hhh8z8LgsLxWtWOsJX3pAe9hyHwInkjYWOIRrkSAT4n1t/3hBQjS6clv088QsQr3oY5hN6MDTUwkL+AsCBiY' \
+   'http://tyganeutronics.com/scrappy/scrape?url=http://zimrate.tyganeutronics.com&selector=%23rates > div > div > div.pricing-tables-wrap > div:nth-child(5) > div > div > div:nth-child(2) > div&format=html'
+```
 
-## Installation & updates
+##### Breakdown
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+###### Endpoint
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+http://your-install/scrappy
 
-## Setup
+###### Post or Get
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+1. URL: `http://zimrate.tyganeutronics.com`
+    - Page to scrape
+2. selector: 
+  - Selectors to filter out unwanted content, with either of the below listed options
+        - css: `#rates > div > div > div.pricing-tables-wrap > div:nth-child(5) > div > div > div:nth-child(2) > div`
+        - xpath: `.//*[@id="rates"]/div/div/div[contains(concat(" ",normalize-space(@class)," ")," pricing-tables-wrap ")]/div[(count(preceding-sibling::*)+1) = 5]/div/div/div[(count(preceding-sibling::*)+1) = 2]/div/span[contains(concat(" ",normalize-space(@class)," ")," pricing-table-price-amount ")][contains(concat(" ",normalize-space(@class)," ")," h1 ")]`
+3. format:
+  - The format to return the data in
+    - html: Will just return the html of first matching element.
+    - text: Will return the text (html striped) of first matching element.
 
-## Important Change with index.php
+###### Headers
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+1. Authorization: Bearer
+  - Just a token to reduce abuse of the api. Can easily be created using the below details
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+```shell
+wget --no-check-certificate --quiet \
+  --method GET \
+  --timeout=0 \
+  --header '' \
+   'http://tyganeutronics.com/scrappy/auth?email=tygalive@gmail.com'
+```
 
-**Please** read the user guide for a better explanation of how CI4 works!
+##### Breakdown
 
-## Repository Management
+###### Endpoint
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+http://your-install/auth
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+###### Post or Get
 
-## Server Requirements
+1. email:
+  - Your email to generate a token
+  - No security is enforced, just a mechanism to control abuse
 
-PHP version 7.4 or higher is required, with the following extensions installed:
+### Installation
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+1. `echo "Cloning" && git clone https://github.com/richard-muvirimi/php-scrappy -C scrappy`
+2. `echo "Change to working directory" && cg scrappy`
+3. Create a .env based on the env provided
+4. `echo "Setting up" && composer install && php spark migrate`
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+### License
 
-- json (enabled by default - don't turn it off)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
-- xml (enabled by default - don't turn it off)
+MIT
