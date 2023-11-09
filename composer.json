@@ -1,74 +1,116 @@
 {
-    "name": "richard-muvirimi/scrappy",
+    "name": "richard-muvirimi/scrappy-remote",
     "type": "project",
-    "description": "CodeIgniter4 starter app",
-    "homepage": "https://codeigniter.com",
+    "description": "Php web scrapper utilizing a different machine for the scrapping.",
+    "keywords": [
+        "scrapper"
+    ],
     "license": "MIT",
     "authors": [
         {
             "name": "Richard Muvirimi",
-            "email": "rich4rdmuvirimi@gmail.com",
-            "homepage": "http://richard.co.zw",
+            "email": "richard@tyganeutronics.com",
+            "homepage": "https://richard.co.zw",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "codeigniter4/framework": "^4.0",
-        "symfony/polyfill-php80": "^1.26",
-        "symfony/polyfill-php81": "^1.26",
-        "symfony/dom-crawler": "^5.4",
-        "symfony/css-selector": "^5.4",
-        "masterminds/html5": "^2.7",
-        "lodash-php/lodash-php": "^0.0.7"
+        "php": "^8.1",
+        "doctrine/dbal": "^3.7",
+        "bootstrapdash/skydash-free-bootstrap-admin-template": "1.0",
+        "guzzlehttp/guzzle": "^7.8",
+        "laravel/framework": "^10.31",
+        "laravel/sanctum": "^3.3",
+        "laravel/tinker": "^2.8",
+        "nuwave/lighthouse": "^6.16",
+        "ext-pdo": "*"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9",
-        "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^9.1",
-        "squizlabs/php_codesniffer": "^3.7",
-        "codeigniter4/codeigniter4-standard": "^1.1",
-        "phpcompatibility/php-compatibility": "^9.3",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
-    },
-    "suggest": {
-        "ext-fileinfo": "Improves mime type detection for files"
+        "fakerphp/faker": "^1.23",
+        "laravel/pint": "^1.013",
+        "laravel/sail": "^1.26",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^7.10",
+        "phpunit/phpunit": "^10.4",
+        "spatie/laravel-ignition": "^2.3",
+        "inpsyde/composer-assets-compiler": "^3.0"
     },
     "autoload": {
-        "exclude-from-classmap": [
-            "**/Database/Migrations/**"
-        ]
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Support\\": "tests/_support"
+            "Tests\\": "tests/"
         }
     },
     "scripts": {
         "qc": [
-            "@phpcs",
+            "@pint",
             "@test"
         ],
-        "php-cs-setup": [
-            "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
-            "@phpcs -i"
+        "pint": [
+            "pint ."
         ],
-        "phpcs": [
-            "vendor/bin/phpcs ."
+        "test": "phpunit",
+        "php-cs-fixer": "php-cs-fixer --config=./.phpcs.xml",
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
         ],
-        "test": "phpunit"
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
     },
-    "support": {
-        "forum": "http://forum.codeigniter.com/",
-        "source": "https://github.com/codeigniter4/CodeIgniter4",
-        "slack": "https://codeigniterchat.slack.com"
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        },
+        "composer-asset-compiler": {
+            "dependencies": "install",
+            "script": "build",
+            "auto-run": "true",
+            "wipe-node-modules": "false"
+        }
     },
     "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "inpsyde/composer-assets-compiler": true,
+            "dealerdirect/phpcodesniffer-composer-installer": false
         },
         "platform": {
-            "php": "7.4"
+            "php": "8.1"
+        },
+        "process-timeout": 0
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "bootstrapdash/skydash-free-bootstrap-admin-template",
+                "version": "1.0",
+                "source": {
+                    "url": "https://github.com/bootstrapdash/skydash-free-bootstrap-admin-template",
+                    "type": "git",
+                    "reference": "main"
+                }
+            }
         }
-    }
+    ]
 }

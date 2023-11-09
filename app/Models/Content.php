@@ -1,50 +1,76 @@
 <?php
 
-/**
- * Content Model
- */
-
 namespace App\Models;
 
-/**
- * Content model class
- *
- * @author  Richard Muvirimi <rich4rdmuvirimi@gmail.com>
- * @since   1.0.0
- * @version 1.0.0
- */
-class Content extends BaseModel
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Content extends Model
 {
-	protected $table         = 'content';
-	protected $allowedFields = [
-		'user',
-		'type',
-		'content',
-		'parent',
-	];
-	protected $returnType    = 'App\Entities\Content';
+    use HasFactory;
 
-	/**
-	 * Join with meta table
-	 *
-	 * @param array|string $fields Fields to join.
-	 * @param string       $type   Type of join.
-	 *
-	 * @author  Richard Muvirimi <rich4rdmuvirimi@gmail.com>
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @return self
-	 */
-	public function joinMeta($fields, string $type = 'LEFT'):self
-	{
-		helper('collection');
+    const STATUS_PENDING = 'pending';
 
-		foreach (array_maybe($fields) as $field)
-		{
-			$this->join('content_meta AS ' . $field, 'content.id = ' . $field . '.content AND ' . $field . ".key = '" . $field . "'", $type);
-		}
+    const STATUS_PROCESSING = 'processing';
 
-		return $this;
-	}
+    const STATUS_ABANDONED = 'abandoned';
+
+    const STATUS_PROCESSED = 'processed';
+
+    const TYPE_SITE = 'site';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'type',
+        'content',
+        'parent',
+    ];
+
+    /**
+     * Relationship with Customer.
+     *
+     * @since 1.0.0
+     *
+     * @version 1.0.0
+     *
+     * @author Richard Muvirimi <richard@tyganeutronics.com>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relationship with Content.
+     *
+     * @since 1.0.0
+     *
+     * @version 1.0.0
+     *
+     * @author Richard Muvirimi <richard@tyganeutronics.com>
+     */
+    public function contents(): HasMany
+    {
+        return $this->hasMany(Content::class, 'parent', 'id');
+    }
+
+    /**
+     * Relationship with ContentMeta.
+     *
+     * @since 1.0.0
+     *
+     * @version 1.0.0
+     *
+     * @author Richard Muvirimi <richard@tyganeutronics.com>
+     */
+    public function contentMetas(): HasMany
+    {
+        return $this->hasMany(ContentMeta::class);
+    }
 }

@@ -1,25 +1,34 @@
 <?php
 
-/**
- * User Meta Model
- */
-
 namespace App\Models;
 
-/**
- * User meta model class
- *
- * @author  Richard Muvirimi <rich4rdmuvirimi@gmail.com>
- * @since   1.0.0
- * @version 1.0.0
- */
-class UserMeta extends BaseModel
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class UserMeta extends Model
 {
-	protected $table         = 'user_meta';
-	protected $allowedFields = [
-		'user',
-		'key',
-		'value',
-	];
-	protected $returnType    = 'App\Entities\UserMeta';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'key',
+        'value',
+    ];
+
+    /**
+     * Relationship with User.
+     *
+     * @since 1.0.0
+     *
+     * @version 1.0.0
+     *
+     * @author Richard Muvirimi <richard@tyganeutronics.com>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -1,25 +1,34 @@
 <?php
 
-/**
- * Content Meta Model
- */
-
 namespace App\Models;
 
-/**
- * Content meta model class
- *
- * @author  Richard Muvirimi <rich4rdmuvirimi@gmail.com>
- * @since   1.0.0
- * @version 1.0.0
- */
-class ContentMeta extends BaseModel
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class ContentMeta extends Model
 {
-	protected $table         = 'content_meta';
-	protected $allowedFields = [
-		'content',
-		'key',
-		'value',
-	];
-	protected $returnType    = 'App\Entities\ContentMeta';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'content_id',
+        'key',
+        'value',
+    ];
+
+    /**
+     * Relationship with User.
+     *
+     * @since 1.0.0
+     *
+     * @version 1.0.0
+     *
+     * @author Richard Muvirimi <richard@tyganeutronics.com>
+     */
+    public function content(): BelongsTo
+    {
+        return $this->belongsTo(Content::class);
+    }
 }

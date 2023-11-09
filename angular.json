@@ -1,0 +1,125 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "src": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "",
+            "sourceRoot": "resources/js",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "public_html/build",
+                        "index": {
+                            "glob": "**/*",
+                            "input": "resources/js/index.blade.php",
+                            "output": "../../resources/views/index.blade.php"
+                        },
+                        "main": "resources/js/main.ts",
+                        "polyfills": [
+                            "zone.js"
+                        ],
+                        "tsConfig": "resources/js/tsconfig.app.json",
+                        "inlineStyleLanguage": "scss",
+                        "assets": [
+                            "resources/js/favicon.ico",
+                            "resources/js/assets"
+                        ],
+                        "styles": [
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/vendors/feather/feather.css",
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/vendors/ti-icons/css/themify-icons.css",
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/vendors/css/vendor.bundle.base.css",
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/css/vertical-layout-light/style.css",
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/vendors/mdi/css/materialdesignicons.min.css",
+                            "resources/js/styles.scss"
+                        ],
+                        "scripts": [
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/vendors/js/vendor.bundle.base.js",
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/js/off-canvas.js",
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/js/hoverable-collapse.js",
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/js/template.js",
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/js/settings.js",
+                            "vendor/bootstrapdash/skydash-free-bootstrap-admin-template/template/js/todolist.js"
+                        ]
+                    },
+                    "configurations": {
+                        "production": {
+                            "deployUrl": "./build/",
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "2kb",
+                                    "maximumError": "4kb"
+                                }
+                            ],
+                            "outputHashing": "all"
+                        },
+                        "development": {
+                            "deployUrl": "./build/",
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "src:build:production"
+                        },
+                        "development": {
+                            "browserTarget": "src:build:development"
+                        }
+                    },
+                    "defaultConfiguration": "development"
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "src:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ],
+                        "tsConfig": "resources/js/tsconfig.spec.json",
+                        "inlineStyleLanguage": "scss",
+                        "assets": [
+                            "resources/js/favicon.ico",
+                            "resources/js/assets"
+                        ],
+                        "styles": [
+                            "resources/js/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                }
+            }
+        }
+    },
+    "cli": {
+        "analytics": "8ceead63-1bb3-40e5-98ff-70235abdf2f8"
+    }
+}

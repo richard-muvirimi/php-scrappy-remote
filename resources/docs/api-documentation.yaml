@@ -1,0 +1,20 @@
+openapi: 3.0.0
+info:
+  title: Scrappy API Documentation
+  description: Documentation for the Scrappy
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/public_html/api
+    description: local server
+  - url: https://scrappy.tyganeutronics.com/api
+    description: production server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+
+paths:
+
