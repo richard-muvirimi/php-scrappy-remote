@@ -15,7 +15,7 @@ class UsageLimit
     /**
      * Handle an incoming request.
      *
-     * @param Closure(Request): (Response) $next
+     * @param  Closure(Request): (Response)  $next
      *
      * @throws Exception
      */
@@ -23,9 +23,9 @@ class UsageLimit
     {
         $usage = $this->getCurrentUsage($request->user());
 
-        if (!$this->hasUsageCredits($usage)) {
+        if (! $this->hasUsageCredits($usage)) {
 
-            $message = '2000 minute execution time limit exceeded. ' . ($usage / 60) . ' minutes used.';
+            $message = '2000 minute execution time limit exceeded. '.($usage / 60).' minutes used.';
 
             return response()->json(compact('message'), Response::HTTP_PAYMENT_REQUIRED);
         }
