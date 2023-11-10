@@ -23,7 +23,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "nuwave/lighthouse": "^6.16",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "inpsyde/composer-assets-compiler": "^3.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -32,8 +33,7 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^7.10",
         "phpunit/phpunit": "^10.4",
-        "spatie/laravel-ignition": "^2.3",
-        "inpsyde/composer-assets-compiler": "^3.0"
+        "spatie/laravel-ignition": "^2.3"
     },
     "autoload": {
         "psr-4": {

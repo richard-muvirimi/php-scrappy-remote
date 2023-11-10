@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a7551a3c5a2ecb5331c0886139f57dd",
+    "content-hash": "4cd8f04e54a1c7bc59dd9964e1bacd49",
     "packages": [
         {
             "name": "bootstrapdash/skydash-free-bootstrap-admin-template",
@@ -1365,6 +1365,71 @@
             ],
             "description": "A library that can provide of a list of classes in a given namespace",
             "time": "2023-06-18T17:43:01+00:00"
+        },
+        {
+            "name": "inpsyde/composer-assets-compiler",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/inpsyde/composer-asset-compiler.git",
+                "reference": "c99bae4522ff854dc179de436e90168d1c418ddc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/inpsyde/composer-asset-compiler/zipball/c99bae4522ff854dc179de436e90168d1c418ddc",
+                "reference": "c99bae4522ff854dc179de436e90168d1c418ddc",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1 || ^2",
+                "ext-json": "*",
+                "php": ">= 7.2 < 8.3"
+            },
+            "require-dev": {
+                "composer/composer": "^1.10.24 || ^2.5.5",
+                "inpsyde/php-coding-standards": "^1.0.0",
+                "mikey179/vfsstream": "^1.6.11",
+                "mockery/mockery": "^1.3.5 || ^1.4.4",
+                "phpunit/phpunit": "^8.5.33 || ^9.6.7",
+                "vimeo/psalm": ">=4.30.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Inpsyde\\AssetsCompiler\\Composer\\Plugin",
+                "branch-alias": {
+                    "dev-master": "2.x-dev",
+                    "dev-v1.x": "1.x-dev",
+                    "dev-v2.x": "2.x-dev",
+                    "dev-v3.x": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Inpsyde\\AssetsCompiler\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Inpsyde GmbH",
+                    "email": "hello@inpsyde.com",
+                    "homepage": "https://inpsyde.com/",
+                    "role": "Company"
+                },
+                {
+                    "name": "Giuseppe Mazzapica",
+                    "email": "g.mazzapica@inpsyde.com"
+                }
+            ],
+            "description": "Composer plugin that installs and compile frontend dependencies for installed Composer packages based on configuration.",
+            "support": {
+                "issues": "https://github.com/inpsyde/composer-asset-compiler/issues",
+                "source": "https://github.com/inpsyde/composer-asset-compiler/tree/3.0.1"
+            },
+            "time": "2023-05-29T11:09:13+00:00"
         },
         {
             "name": "laragraph/utils",
@@ -6666,71 +6731,6 @@
                 "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.0.1"
             },
             "time": "2020-07-09T08:09:16+00:00"
-        },
-        {
-            "name": "inpsyde/composer-assets-compiler",
-            "version": "3.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/inpsyde/composer-asset-compiler.git",
-                "reference": "c99bae4522ff854dc179de436e90168d1c418ddc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/inpsyde/composer-asset-compiler/zipball/c99bae4522ff854dc179de436e90168d1c418ddc",
-                "reference": "c99bae4522ff854dc179de436e90168d1c418ddc",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1 || ^2",
-                "ext-json": "*",
-                "php": ">= 7.2 < 8.3"
-            },
-            "require-dev": {
-                "composer/composer": "^1.10.24 || ^2.5.5",
-                "inpsyde/php-coding-standards": "^1.0.0",
-                "mikey179/vfsstream": "^1.6.11",
-                "mockery/mockery": "^1.3.5 || ^1.4.4",
-                "phpunit/phpunit": "^8.5.33 || ^9.6.7",
-                "vimeo/psalm": ">=4.30.0"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Inpsyde\\AssetsCompiler\\Composer\\Plugin",
-                "branch-alias": {
-                    "dev-master": "2.x-dev",
-                    "dev-v1.x": "1.x-dev",
-                    "dev-v2.x": "2.x-dev",
-                    "dev-v3.x": "3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Inpsyde\\AssetsCompiler\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Inpsyde GmbH",
-                    "email": "hello@inpsyde.com",
-                    "homepage": "https://inpsyde.com/",
-                    "role": "Company"
-                },
-                {
-                    "name": "Giuseppe Mazzapica",
-                    "email": "g.mazzapica@inpsyde.com"
-                }
-            ],
-            "description": "Composer plugin that installs and compile frontend dependencies for installed Composer packages based on configuration.",
-            "support": {
-                "issues": "https://github.com/inpsyde/composer-asset-compiler/issues",
-                "source": "https://github.com/inpsyde/composer-asset-compiler/tree/3.0.1"
-            },
-            "time": "2023-05-29T11:09:13+00:00"
         },
         {
             "name": "laravel/pint",
