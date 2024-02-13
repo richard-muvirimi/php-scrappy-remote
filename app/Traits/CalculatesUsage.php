@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Models\Content;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 trait CalculatesUsage

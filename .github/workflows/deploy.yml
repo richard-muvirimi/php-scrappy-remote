@@ -3,7 +3,7 @@ name: Update Dependencies
 on:
   # On push or after every 7 days
   push:
-    branches: [ master ]
+    branches: [ development ]
   schedule:
     - cron: "0 0 1/7 * *"
 
@@ -70,10 +70,10 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: development
 
       - name: Prepare Deploy
-        run: rsync -rvzt --include-from=server/laravel/.rsync --exclude-from=server/laravel/.gitignore --exclude '.rsync' ./server/laravel ./distribution/
+        run: rsync -rvzt --include-from=.rsync --exclude-from=.gitignore --exclude '.rsync' ./ ./distribution/
 
       - name: Deploy
         uses: SamKirkland/FTP-Deploy-Action@4.3.2

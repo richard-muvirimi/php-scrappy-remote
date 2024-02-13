@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Content;
 use App\Models\ContentMeta;
-use App\Models\User;
 use App\Rules\IsBoolean;
 use App\Traits\CalculatesUsage;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -119,7 +117,7 @@ class ScrapeController extends BaseController
                     break;
                 }
                 sleep(1);
-            } while (is_a($meta, ContentMeta::class) && !in_array($meta->value, [Content::STATUS_PROCESSED, Content::STATUS_ABANDONED]) && time() < $expire);
+            } while (is_a($meta, ContentMeta::class) && ! in_array($meta->value, [Content::STATUS_PROCESSED, Content::STATUS_ABANDONED]) && time() < $expire);
 
             if (is_a($meta, ContentMeta::class) && in_array($meta->value, [Content::STATUS_PENDING, Content::STATUS_PROCESSING])) {
                 $meta->update(['value' => Content::STATUS_ABANDONED]);
@@ -134,7 +132,7 @@ class ScrapeController extends BaseController
 
             $usage = $this->getCurrentUsage($request->user()->first());
 
-            $response['info'] = round($usage / (60 * 2000)) * 100 . '% used of 2000 Minute limit.';
+            $response['info'] = round($usage / (60 * 2000)) * 100 .'% used of 2000 Minute limit.';
 
             return response()->json($response);
 
@@ -244,7 +242,7 @@ class ScrapeController extends BaseController
                     break;
                 }
                 sleep(1);
-            } while (!is_a($content, Content::class) && time() < $expire);
+            } while (! is_a($content, Content::class) && time() < $expire);
 
             if (is_a($content, Content::class)) {
 
