@@ -20,6 +20,8 @@ trait CalculatesUsage
 
     protected function hasUsageCredits(float $current): bool
     {
-        return $current < 60 * 2000;
+        return $current < $this->usageLimit;
     }
+
+    protected int|float $usageLimit = 60 * 2000;
 }
