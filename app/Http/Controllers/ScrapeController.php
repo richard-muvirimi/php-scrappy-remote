@@ -132,7 +132,7 @@ class ScrapeController extends BaseController
 
             $usage = $this->getCurrentUsage($request->user()->first());
 
-            $response['info'] = round($usage / (60 * 2000)) * 100 .'% used of 2000 Minute limit.';
+            $response['info'] = $usage.' of '.$this->usageLimit.' ('.round($usage / (60 * intval($this->usageLimit))) * 100 .'%) seconds used.';
 
             return response()->json($response);
 

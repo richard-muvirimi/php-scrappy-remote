@@ -25,7 +25,7 @@ class UsageLimit
 
         if (! $this->hasUsageCredits($usage)) {
 
-            $message = '2000 minute execution time limit exceeded. '.($usage / 60).' minutes used.';
+            $message = $this->usageLimit.' second execution time limit exceeded. '.$usage.' seconds used.';
 
             return response()->json(compact('message'), Response::HTTP_PAYMENT_REQUIRED);
         }
