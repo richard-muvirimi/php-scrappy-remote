@@ -3,7 +3,7 @@ name: Update Dependencies
 on:
   # On push or after every 7 days
   push:
-    branches: [ development ]
+    branches: [ master ]
   schedule:
     - cron: "0 0 1/7 * *"
 
