@@ -55,12 +55,6 @@
         "pint": [
             "pint ."
         ],
-        "sail-up": [
-            "sail up -d"
-        ],
-        "sail-down": [
-            "sail down -v"
-        ],
         "test": "phpunit",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
