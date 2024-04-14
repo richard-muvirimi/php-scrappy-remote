@@ -24,7 +24,7 @@ class Redocly extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         // phpcs:ignore Generic.Files.LineLength.TooLong
         Process::run('npx @redocly/cli build-docs -o resources/views/documentation.blade.php resources/docs/api-documentation.yaml');
