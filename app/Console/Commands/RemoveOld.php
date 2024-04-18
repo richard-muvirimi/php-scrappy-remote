@@ -25,7 +25,7 @@ class RemoveOld extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         Content::query()
             ->where('type', '=', Content::TYPE_SITE)
