@@ -31,7 +31,7 @@ class ScrapeController extends BaseController
                 'url' => 'required|url:https,http',
                 'css' => 'string|required_without:xpath',
                 'xpath' => 'string|required_without:css',
-                'format' => 'sometimes|required|string|in:text,html',
+                'format' => 'sometimes|required|string|in:text,html,json',
                 'javascript' => ['sometimes', 'required', new IsBoolean()],
                 'user_agent' => 'sometimes|required|string',
                 'timeout' => 'sometimes|required|numeric|min:1|max:600',
