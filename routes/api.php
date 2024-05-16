@@ -20,7 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::match(['post', 'get'], 'auth', [AuthController::class, 'auth']);
+Route::match(['post', 'get'], 'login', [AuthController::class, 'login']);
+Route::middleware(['auth:sanctum'])->match(['post', 'get'], 'register', [AuthController::class, 'register']);
+Route::middleware(['auth:sanctum'])->match(['post', 'get'], 'logout', [AuthController::class, 'logout']);
 
 Route::middleware(['auth:sanctum', 'usage.limit'])->match(['get', 'post'], 'scrape', [ScrapeController::class, 'scrape']);
 Route::match(['get', 'post'], 'query', [ScrapeController::class, 'query']);
