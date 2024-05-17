@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('contents', function (Blueprint $table) {
-            $table->renameColumn('user', 'user_id');
+        Schema::create('user_metas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->index()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('key', 50)->index();
+            $table->string('value');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('contents', function (Blueprint $table) {
-            $table->renameColumn('user_id', 'user');
-        });
+        Schema::dropIfExists('user_metas');
     }
 };
