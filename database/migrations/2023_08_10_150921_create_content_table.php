@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('content_metas', function (Blueprint $table) {
-            $table->renameColumn('content', 'content_id');
+        Schema::create('contents', function (Blueprint $table) {
+            $table->id();
+            $table->morphs('owner');
+            $table->string('type', 50)->index();
+            $table->string('content');
+            $table->integer('parent')->index()->nullable();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('content_metas', function (Blueprint $table) {
-            $table->renameColumn('content_id', 'content');
-        });
+        Schema::dropIfExists('contents');
     }
 };

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -10,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('content_meta')) {
-            Schema::rename('content_meta', 'content_metas');
-        }
+        Schema::create('options', function (Blueprint $table) {
+            $table->id();
+            $table->string('key', 50)->index();
+            $table->string('value');
+            $table->timestamps();
+        });
+
     }
 
     /**
@@ -20,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('content_meta');
+        Schema::dropIfExists('options');
     }
 };
