@@ -95,12 +95,26 @@ class AuthController extends BaseController
     public function logout(Request $request): JsonResponse
     {
         try {
-            $request->user()->currentAccessToken()->delete();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Logged out successfully',
+            $request->validate([
+                'everywhere' => ['sometimes', 'required', new IsBoolean()],
             ]);
+
+            if (Str::of($request->get('everywhere'))->toBoolean()) {
+                $request->user()->tokens()->delete();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Logged out from all devices successfully',
+                ]);
+            } else {
+                $request->user()->currentAccessToken()->delete();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Logged out successfully',
+                ]);
+            }
+
         } catch (Exception $e) {
             return response()->json([
                 'status' => false,
