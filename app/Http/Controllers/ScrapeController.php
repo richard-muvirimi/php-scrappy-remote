@@ -125,9 +125,8 @@ class ScrapeController extends BaseController
 
             $meta = $content->contentMetas()->where('key', 'status')->first();
             if (is_a($meta, ContentMeta::class) && $meta->value === Content::STATUS_PROCESSED) {
+                $response['status'] = true;
                 $response['data'] = $content->contentMetas()->where('key', 'response')->first()->value;
-            } else {
-                $response['data'] = false;
             }
 
             $usage = $this->getCurrentUsage($request->user()->first());
@@ -137,9 +136,11 @@ class ScrapeController extends BaseController
             $usage = number_format($usage);
             $limit = number_format($this->usageLimit);
 
-            $response['info'] = $usage.' of '.$limit.' ('.$percentage.'%) seconds used.';
-
-            return response()->json($response);
+            return response()->json([
+                'status' => $response['status'] ?? false,
+                'data' => $response['data'] ?? '',
+                'message' => $usage.' of '.$limit.' ('.$percentage.'%) seconds used.',
+            ]);
 
         } catch (Exception $e) {
             return response()->json([
@@ -171,19 +172,14 @@ class ScrapeController extends BaseController
 
                 if ($this->hasUsageCredits($usage)) {
 
-                    $hasWebhook = $content
+                    $webhook = $content
                         ->whereRelation('contentMetas', 'key', '=', 'webhook_url')
                         ->whereRelation('contentMetas', 'key', '=', 'webhook_expire')
-                        ->exists();
+                        ->pluck('value', 'key');
 
-                    if ($hasWebhook) {
+                    if ($webhook->isNotEmpty()) {
 
-                        $expires = $content->contentMetas()
-                            ->where('key', '=', 'webhook_expire')
-                            ->first()
-                            ->value('value');
-
-                        if (Carbon::now()->subSeconds($expires)->isAfter(Carbon::now())) {
+                        if (Carbon::now()->subSeconds($webhook->get('webhook_expire'))->isAfter(Carbon::now())) {
                             try {
 
                                 $body = [
@@ -196,7 +192,7 @@ class ScrapeController extends BaseController
 
                                 $client = new Client($options);
 
-                                $client->post('query', [
+                                $client->post($webhook->get('webhook_url'), [
                                     RequestOptions::FORM_PARAMS => $body,
                                     RequestOptions::CONNECT_TIMEOUT => 3,
                                     RequestOptions::TIMEOUT => 1,

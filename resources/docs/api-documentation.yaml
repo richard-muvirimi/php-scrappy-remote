@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
   title: Scrappy API Documentation
-  description: Documentation for the Scrappy
+  description: Documentation for the Scrappy Service.
   version: 1.0.0
 servers:
-  - url: http://localhost:8000/public_html/api
+  - url: http://localhost/api
     description: local server
   - url: https://scrappy.tyganeutronics.com/api
     description: production server
@@ -14,7 +14,387 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  parameters:
+    usernameParam:
+        in: query
+        name: username
+        example: richard@tyganeutronics.com
+        description: The username of the user.
+        schema:
+          type: string
+    passwordParam:
+        in: query
+        name: password
+        example: password
+        description: The password of the user.
+        schema:
+          type: string
   schemas:
+    ResponseSuccessToken:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: Indicates if the request was successful.
+        message:
+          type: string
+          description: Human readable message to be displayed to the user.
+        data:
+          type: object
+          description: Data to be returned to the user.
+          properties:
+            token:
+              type: string
+              description: JWT token to use for authentication.
+    ResponseSuccessScrape:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: Indicates if the request was successful.
+        message:
+          type: string
+          description: Information on the remaining credits.
+        data:
+          type: string
+          description: Data scraped from the website.
+    ResponseError:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: Indicates if the request was successful.
+        message:
+          type: string
+          description: Human readable message to be displayed to the user.
+    ResponseSuccess:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: Indicates if the request was successful.
+        message:
+          type: string
+          description: Human readable message to be displayed to the user.
+    FieldUsername:
+      type: string
+      example: richard@tyganeutronics.com
+      description: The username of the user.
+    FieldPassword:
+      type: string
+      example: password
+      description: The password of the user.
 
 paths:
+  /login:
+    get:
+      tags:
+        - Authentication
+      summary: Login
+      description: Login to the application and get a token.
+      parameters:
+        - $ref: '#/components/parameters/usernameParam'
+        - $ref: '#/components/parameters/passwordParam'
+      responses:
+        '200':
+          description: Successful login.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSuccessToken'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    post:
+      tags:
+        - Authentication
+      summary: Login
+      description: Login to the application.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  $ref: '#/components/schemas/FieldUsername'
+                password:
+                  $ref: '#/components/schemas/FieldPassword'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSuccessToken'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /register:
+    get:
+        tags:
+            - Authentication
+        summary: Register
+        description: Register to the application and get a token.
+        parameters:
+          - $ref: '#/components/parameters/usernameParam'
+          - $ref: '#/components/parameters/passwordParam'
+        responses:
+          '200':
+            description: Successful login
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseSuccessToken'
+          '500':
+            description: Server error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseError'
+
+    post:
+      tags:
+        - Authentication
+      summary: Register
+      description: Register to the application and get a token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  $ref: '#/components/schemas/FieldUsername'
+                password:
+                  $ref: '#/components/schemas/FieldPassword'
+      responses:
+        '200':
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSuccessToken'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /logout:
+    get:
+        tags:
+            - Authentication
+        summary: Logout
+        description: Logout from the application
+        parameters:
+          - in: query
+            name: everywhere
+            example: true
+            description: Whether to logout from all devices.
+            schema:
+              type: boolean
+        security:
+          - bearerAuth: [ ]
+        responses:
+          '200':
+            description: Successful logout
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseSuccess'
+          '500':
+            description: Server error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseError'
+
+    post:
+        tags:
+            - Authentication
+        summary: Logout
+        description: Logout from the application
+        requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  everywhere:
+                    type: boolean
+                    example: true
+                    description: Whether to logout from all devices.
+        security:
+          - bearerAuth: [ ]
+        responses:
+          '200':
+            description: Successful logout
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseSuccess'
+          '500':
+            description: Server error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseError'
+
+  /scrape:
+    get:
+      tags:
+        - Scraper
+      summary: Scrape
+      description: Scrape a website. This endpoint is used to scrape a website and return the scraped data.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: query
+          name: url
+          example: https://tyganeutronics.com
+          description: The URL of the website to scrape.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: css
+          example: h1
+          description: The CSS selector to scrape. Either this or xpath is required.
+          schema:
+            type: string
+        - in: query
+          name: xpath
+          example: /html/body/h1
+          description: The XPATH selector to scrape. Either this or css is required.
+          schema:
+            type: string
+        - in: query
+          name: format
+          example: true
+          description: The format to return the scraped data. Either text, html or json. JSON treats the parsed data as JSON, you can then use dot selection to get data from the JSON.
+          schema:
+            type: string
+            enum:
+              - text
+              - html
+              - json
+        - in: query
+          name: javascript
+          example: true
+          description: Whether to execute javascript on the page. This is useful for pages that load content using javascript.
+          schema:
+            type: boolean
+        - in: query
+          name: user_agent
+          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3
+          description: The user agent to use when scraping the page.
+          schema:
+              type: string
+        - in: query
+          name: timeout
+          example: 10
+          description: The timeout to wait for the page to load.
+          schema:
+              type: integer
+        - in: query
+          name: webhook_url
+          example: https://tyganeutronics.com
+          description: The URL to send the scraped data to as a post request.
+          schema:
+              type: string
+        - in: query
+          name: webhook_expire
+          example: 10
+          description: The time in seconds to wait before the webhook expires.
+          schema:
+              type: integer
+      responses:
+        '200':
+          description: Successful scrape
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSuccessScrape'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+    post:
+      tags:
+        - Scraper
+      summary: Scrape
+      description: Scrape a website. This endpoint is used to scrape a website and return the scraped data.
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  example: https://tyganeutronics.com
+                  description: The URL of the website to scrape.
+                css:
+                    type: string
+                    example: h1
+                    description: The CSS selector to scrape. Either this or xpath is required.
+                xpath:
+                    type: string
+                    example: /html/body/h1
+                    description: The XPATH selector to scrape. Either this or css is required.
+                format:
+                    type: string
+                    example: true
+                    description: The format to return the scraped data. Either text, html or json. JSON treats the parsed data as JSON, you can then use dot selection to get data from the JSON.
+                javascript:
+                    type: boolean
+                    example: true
+                    description: Whether to execute javascript on the page. This is useful for pages that load content using javascript.
+                user_agent:
+                    type: string
+                    example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3
+                    description: The user agent to use when scraping the page
+                timeout:
+                    type: integer
+                    example: 10
+                    description: The timeout to wait for the page to load.
+                webhook_url:
+                    type: string
+                    example: https://tyganeutronics.com
+                    description: The URL to send the scraped data to as a post request.
+                webhook_expire:
+                    type: integer
+                    example: 10
+                    description: The time in seconds to wait before the webhook expires.
+      responses:
+        '200':
+          description: Successful scrape
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSuccessScrape'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
 

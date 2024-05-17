@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Rules\IsBoolean;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -10,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,9 +22,6 @@ class AuthController extends BaseController
 
     /**
      * Authenticate the user
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function login(Request $request): JsonResponse
     {
@@ -57,21 +56,20 @@ class AuthController extends BaseController
 
     /**
      * Register a new user
-     *
-     * @param Request $request
-     * @return JSONResponse
      */
-    public function register(Request $request) : JSONResponse
+    public function register(Request $request): JSONResponse
     {
         try {
 
             $request->validate([
                 'email' => 'required|email|unique:users,email',
+                'name' => 'sometimes|required|string',
                 'password' => 'required',
             ]);
 
             $user = User::create([
                 'email' => $request->email,
+                'name' => $request->name ?? '',
                 'password' => Hash::make($request->password),
             ]);
 
@@ -93,11 +91,8 @@ class AuthController extends BaseController
 
     /**
      * Logout the user (Revoke the token)
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
-    public function logout(Request $request) : JsonResponse
+    public function logout(Request $request): JsonResponse
     {
         try {
             $request->user()->currentAccessToken()->delete();

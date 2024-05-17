@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/documentation', function () {
+    return view('documentation');
+});
+
 Route::get('/setup', function () {
     Artisan::call('migrate');
     Artisan::call('route:cache');
